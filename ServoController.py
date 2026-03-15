@@ -92,9 +92,9 @@ def updateLegServos(legID :int, angle1 :int, angle2 :int, angle3 :int):
             set_angle_with_retry(servoController_L.servo[13], s3)
 
         case 3:
-            set_angle_with_retry(servoController_R.servo[0], s1)
-            set_angle_with_retry(servoController_R.servo[1], s2)
-            set_angle_with_retry(servoController_R.servo[2], s3)
+            set_angle_with_retry(servoController_R.servo[15], s1)
+            set_angle_with_retry(servoController_R.servo[14], s2)
+            set_angle_with_retry(servoController_R.servo[13], s3)
 
         case 4:
             set_angle_with_retry(servoController_R.servo[11], s1)
@@ -102,6 +102,6 @@ def updateLegServos(legID :int, angle1 :int, angle2 :int, angle3 :int):
             set_angle_with_retry(servoController_R.servo[9], s3)
 
         case 5:
-            set_angle_with_retry(servoController_R.servo[15], s1)
-            set_angle_with_retry(servoController_R.servo[14], s2)
-            set_angle_with_retry(servoController_R.servo[13], s3)
+            set_angle_with_retry(servoController_R.servo[0], s1)
+            set_angle_with_retry(servoController_R.servo[1], s2)
+            set_angle_with_retry(servoController_R.servo[2], s3)

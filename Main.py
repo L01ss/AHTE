@@ -2,15 +2,15 @@ from string import printable
 import time
 import ServoController
 import LegCalculations
-import ControllerCalculator
+#import ControllerCalculator
 
 # Creates Leg the objects from the class Leg
 Leg0 = LegCalculations.Leg(legID=0, offset=(77,131,0),  angle=-35,  lowerleg_length=93.2, middleleg_length=67.2, upperleg_length=40, restPosition=(200,131,50))
 Leg1 = LegCalculations.Leg(legID=1, offset=(100,0,0),   angle=0,    lowerleg_length=93.2, middleleg_length=67.2, upperleg_length=40, restPosition=(250,0,50))
 Leg2 = LegCalculations.Leg(legID=2, offset=(77,-131,0), angle=35,   lowerleg_length=93.2, middleleg_length=67.2, upperleg_length=40, restPosition=(200,-131,50))
-Leg3 = LegCalculations.Leg(legID=3, offset=(77,131,0),  angle=35,   lowerleg_length=93.2, middleleg_length=67.2, upperleg_length=40, restPosition=(200,131,50))
+Leg3 = LegCalculations.Leg(legID=3, offset=(77,131,0), angle=-35,  lowerleg_length=93.2, middleleg_length=67.2, upperleg_length=40, restPosition=(200,131,50))
 Leg4 = LegCalculations.Leg(legID=4, offset=(100,0,0),   angle=0,    lowerleg_length=93.2, middleleg_length=67.2, upperleg_length=40, restPosition=(250,0,50))
-Leg5 = LegCalculations.Leg(legID=5, offset=(77,-131,0), angle=-35,  lowerleg_length=93.2, middleleg_length=67.2, upperleg_length=40, restPosition=(200,-131,50))
+Leg5 = LegCalculations.Leg(legID=5, offset=(77,-131,0),  angle=35,   lowerleg_length=93.2, middleleg_length=67.2, upperleg_length=40, restPosition=(200,-131,50))
 
 def stand(seconds):
     """
@@ -34,7 +34,7 @@ def gaitPatternManager(patternID :int, turnAngle, stepLength):
     :param stepLength: The length of each step in mm
     """
     stepHeight = 100
-    stepTime = 2
+    stepTime = 5
     pointsPerPhase = 20
 
     match patternID:
@@ -110,10 +110,11 @@ stand(3)
 
 while True:
 
-    turnAngle, stepLength = ControllerCalculator.calcBodyMovement()
-
+    #turnAngle, stepLength = ControllerCalculator.calcBodyMovement()
+    turnAngle, stepLength = 0, 100
     # makes the robot stand still for 0.2 seconds if the step length is less than 20 mm, this way the cpu wont spin hard when standing still
     if stepLength < 20:
         stand(0.2)
 
-    gaitPatternManager(ControllerCalculator.gaitPatternID, turnAngle, stepLength)
+    gaitPatternManager(2, turnAngle, stepLength)
+    #ControllerCalculator.gaitPatternID
