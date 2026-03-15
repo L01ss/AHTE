@@ -23,7 +23,7 @@ def stand(seconds):
         for leg in [Leg0, Leg1, Leg2, Leg3, Leg4, Leg5]:
             a1, a2, a3 = leg.calcLegToPoint(leg.x_restPos, leg.z_restPos, leg.y_restPos)
             ServoController.updateLegServos(leg.legID, a1, a2, a3)
-        time.sleep(0.02) 
+        time.sleep(0.05) 
 
 def gaitPatternManager(patternID :int, turnAngle, stepLength):
     """
@@ -103,12 +103,17 @@ def gaitPatternManager(patternID :int, turnAngle, stepLength):
         a1, a2, a3 = Leg5.calcLegToPoint(L5_x[i], L5_z[i], L5_y[i])
         ServoController.updateLegServos(5, a1, a2, a3)
 
-        time.sleep(0.05)
         time.sleep(delay)
 
 # makes the robot stand still for 3 seconds before starting
 stand(3)
 
 while True:
+
     turnAngle, stepLength = ControllerCalculator.calcBodyMovement()
+
+    # makes the robot stand still for 0.2 seconds if the step length is less than 20 mm, this way the cpu wont spin hard when standing still
+    if stepLength < 20:
+        stand(0.2)
+
     gaitPatternManager(ControllerCalculator.gaitPatternID, turnAngle, stepLength)

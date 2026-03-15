@@ -4,28 +4,31 @@ from pyPS4Controller.controller import Controller
 
 # Global variables that will be updated using the controller thread
 leftJoystick_percentage = 0
-rightJostick_percentage = 0
+rightJoystick_percentage = 0
 throttle_percentage = 0
 gaitPatternID = 0
 
-# this function will be called in the main loop, it will give the turnAngle and stepDistance based on the current controller inputs
+# this function will be called in the main loop, it will give the turnAngle and stepLength based on the current controller inputs
 def calcBodyMovement():
     """
-    calcBodyMovement calculates the turn angle and step distance based on controller inputs
+    calcBodyMovement calculates the turn angle and step length based on controller inputs
 
     :param throttle_percentage: The throttle input as a percentage (0.0 to 100.0)
     :param leftJoystick_percentage: The left joystick input as a percentage (-100.0 to 100.0)
     :param rightJostick_percentage: The right joystick input as a percentage (-100.0 to 100.0)
 
-    :return: returns turnAngle in degrees and stepDistance in mm
+    :return: returns turnAngle in degrees and stepLength in mm
     """
+
     maxTurnAngle = 35.0
     maxStepDistance = 160.0
 
-    turnAngle = (rightJostick_percentage - leftJoystick_percentage) * maxTurnAngle/200
-    stepDistance = throttle_percentage * maxStepDistance
+    global leftJoystick_percentage, rightJoystick_percentage, throttle_percentage
 
-    return turnAngle, stepDistance
+    turnAngle = (rightJoystick_percentage - leftJoystick_percentage) * maxTurnAngle/200
+    stepLength = throttle_percentage * maxStepLength/100
+
+    return turnAngle, stepLength
 
 class MyController(Controller):
     def __init__(self, **kwargs):
@@ -185,6 +188,12 @@ controller = MyController(interface="/dev/input/js0", connecting_using_ds4drv=Fa
 
 def start_controller():
     controller.listen(timeout=60)
+
+    # this only runs if the controller disconnects, it makes sure that the robot will stop
+    global throttle_percentage, leftJoystick_percentage, rightJoystick_percentage
+    throttle_percentage = 0
+    leftJoystick_percentage = 0
+    rightJoystick_percentage = 0
 
 # Starts a separate thread to listen for controller inputs, this allows the main loop to run at the same time
 threading.Thread(target=start_controller, daemon=True).start()

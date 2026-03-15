@@ -62,6 +62,10 @@ class Leg:
         Rxz = math.sqrt((Rz ** 2) + (Rx ** 2))
         R = math.sqrt(((Rxz - L3) ** 2) + (Ry ** 2))
 
+        # returns 0 to prevent division by zero
+        if R < 0.0001:
+            return 0.0, 0.0, 0.0
+
         # calculates angles of the leg joints in radians
         angle1 = math.pi - math.acos(clamp(((L1 ** 2) + (L2 ** 2) - (R ** 2)) / (2 * L1 * L2), -1.0, 1.0))
         angle2 = math.acos(clamp((((R ** 2) + (L2 ** 2) - (L1 ** 2)) / (2 * L2 * R)), -1.0, 1.0)) - math.atan2(Ry, (Rxz - L3))
@@ -79,12 +83,12 @@ class Leg:
 
         return round(angle1, 2), round(angle2, 2), round(angle3, 2)
 
-    def calcLegStep(self, turnAngle :float, stepHeight :int, stepLength :int, pointsPerPhase :int, group :int, gaitPhases :int):
+    def calcLegStep(self, turnAngle :float, stepLength :int, stepHeight :int, pointsPerPhase :int, group :int, gaitPhases :int):
         """
         calcLegStep calculates a simple stepping path for the foot.
 
         :param turnAngle: The turn angle of the body in degrees
-        :param stepDistance: The total step distance of the body from the start point to the end point in mm
+        :param stepLength: The total step distance of the body from the start point to the end point in mm
         :param stepHeight: The step height of the leg in mm
         :param stepLength: The length of each step in mm
         :param stepTime: The time needed for each step
@@ -106,10 +110,12 @@ class Leg:
 
         # this function adds the points for the stance phase of the leg, with the length depending on how many gaitPhases there are
         def add_stance():
+            nonlocal x_currentPos, z_currentPos
+
             for i in range(pointsPerPhase):
                 s = i / (pointsPerPhase - 1)
                 x = x_currentPos - (x_step * 2 * s * (1 / (gaitPhases - 1)) )
-                z = z_currentPos - (x_step * 2 * s * (1 / (gaitPhases - 1)) )
+                z = z_currentPos - (z_step * 2 * s * (1 / (gaitPhases - 1)) )
                 y = self.y_restPos
                     
                 xPoints.append(x)
@@ -121,6 +127,8 @@ class Leg:
 
         # this function adds the points for the swing phase of the leg
         def add_swing():
+            nonlocal x_currentPos, z_currentPos
+
             for i in range(pointsPerPhase):
                 s = i / (pointsPerPhase - 1)
                 x = self.x_restPos - (x_step / 2) + (x_step * 2 * s)
