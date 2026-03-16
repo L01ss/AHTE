@@ -21,7 +21,7 @@ def calcBodyMovement():
     """
 
     maxTurnAngle = 35.0
-    maxStepDistance = 160.0
+    maxStepLength = 100.0
 
     global leftJoystick_percentage, rightJoystick_percentage, throttle_percentage
 

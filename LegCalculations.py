@@ -105,8 +105,8 @@ class Leg:
 
         xPoints, zPoints, yPoints = [], [], []
 
-        x_currentPos = self.x_restPos - (x_step / 2)
-        z_currentPos = self.z_restPos - (z_step / 2)
+        x_currentPos = self.x_restPos - (x_step / 2) + group * (x_step / (gaitPhases - 1))
+        z_currentPos = self.z_restPos - (z_step / 2) + group * (z_step / (gaitPhases - 1))
 
         # this function adds the points for the stance phase of the leg, with the length depending on how many gaitPhases there are
         def add_stance():
@@ -114,16 +114,16 @@ class Leg:
 
             for i in range(pointsPerPhase):
                 s = i / (pointsPerPhase - 1)
-                x = x_currentPos - (x_step * 2 * s * (1 / (gaitPhases - 1)) )
-                z = z_currentPos - (z_step * 2 * s * (1 / (gaitPhases - 1)) )
+                x = x_currentPos - ((x_step * s) / (gaitPhases - 1))
+                z = z_currentPos - ((z_step * s) / (gaitPhases - 1))
                 y = self.y_restPos
                     
                 xPoints.append(x)
                 zPoints.append(z)
                 yPoints.append(y)
 
-            x_currentPos = x
-            z_currentPos = z
+            x_currentPos = x_currentPos - (x_step / (gaitPhases - 1))
+            z_currentPos = z_currentPos - (z_step / (gaitPhases - 1))
 
         # this function adds the points for the swing phase of the leg
         def add_swing():
@@ -131,16 +131,16 @@ class Leg:
 
             for i in range(pointsPerPhase):
                 s = i / (pointsPerPhase - 1)
-                x = self.x_restPos - (x_step / 2) + (x_step * 2 * s)
-                z = self.z_restPos - (z_step / 2) + (z_step * 2 * s)
-                y = self.y_restPos - (stepHeight * math.sin(math.pi * 2 * s))
+                x = self.x_restPos - (x_step / 2) + (x_step * s)
+                z = self.z_restPos - (z_step / 2) + (z_step * s)
+                y = self.y_restPos - (stepHeight * math.sin(math.pi * s))
                 xPoints.append(x)
                 zPoints.append(z)
                 yPoints.append(y)
 
             # sets the current position to the end of the swing phase, which is the start position for the next stance phase
-            x_currentPos = self.x_restPos - (x_step / 2)
-            z_currentPos = self.z_restPos - (z_step / 2)
+            x_currentPos = self.x_restPos + (x_step / 2)
+            z_currentPos = self.z_restPos + (z_step / 2)
 
         # adds the points for the first stance phases, untill the swing phase
         for i in range(group):

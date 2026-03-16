@@ -10,9 +10,9 @@ ServoOffset = [
     (60, 40, 180),  # leg 0
     (45, 25, 180),  # leg 1
     (60, 40, 180),  # leg 2
-    (60, 40, 0),  # leg 3
+    (60, 60, 0),  # leg 3
     (60, 90, 0),  # leg 4
-    (60, 60, 0),  # leg 5
+    (60, 40, 0),  # leg 5
     ]
 
 # This sets the Direction for each servo
@@ -53,6 +53,15 @@ def clamp(a):
     """
     return max(0, min(180, int(a)))
 
+def detachServos():
+    """
+    detachServos detaches all the servos, this is used to prevent overheating and to allow manual movement of the legs
+    :return: None
+    """
+    for i in range(16):
+        set_angle_with_retry(servoController_L.servo[i], None)
+        set_angle_with_retry(servoController_R.servo[i], None)
+
 def updateLegServos(legID :int, angle1 :int, angle2 :int, angle3 :int):
     """
     updateLegServos sets the angles of the servos for a given leg
@@ -92,9 +101,9 @@ def updateLegServos(legID :int, angle1 :int, angle2 :int, angle3 :int):
             set_angle_with_retry(servoController_L.servo[13], s3)
 
         case 3:
-            set_angle_with_retry(servoController_R.servo[0], s1)
-            set_angle_with_retry(servoController_R.servo[1], s2)
-            set_angle_with_retry(servoController_R.servo[2], s3)
+            set_angle_with_retry(servoController_R.servo[15], s1)
+            set_angle_with_retry(servoController_R.servo[14], s2)
+            set_angle_with_retry(servoController_R.servo[13], s3)
 
         case 4:
             set_angle_with_retry(servoController_R.servo[11], s1)
@@ -102,6 +111,6 @@ def updateLegServos(legID :int, angle1 :int, angle2 :int, angle3 :int):
             set_angle_with_retry(servoController_R.servo[9], s3)
 
         case 5:
-            set_angle_with_retry(servoController_R.servo[15], s1)
-            set_angle_with_retry(servoController_R.servo[14], s2)
-            set_angle_with_retry(servoController_R.servo[13], s3)
+            set_angle_with_retry(servoController_R.servo[0], s1)
+            set_angle_with_retry(servoController_R.servo[1], s2)
+            set_angle_with_retry(servoController_R.servo[2], s3)
