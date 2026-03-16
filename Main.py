@@ -2,15 +2,15 @@ from string import printable
 import time
 import ServoController
 import LegCalculations
-#import ControllerCalculator
+import ControllerCalculator
 
 # Creates Leg the objects from the class Leg
-Leg0 = LegCalculations.Leg(legID=0, offset=(77,131,0),  angle=-35,  lowerleg_length=93.2, middleleg_length=67.2, upperleg_length=40, restPosition=(200,131,50))
-Leg1 = LegCalculations.Leg(legID=1, offset=(100,0,0),   angle=0,    lowerleg_length=93.2, middleleg_length=67.2, upperleg_length=40, restPosition=(250,0,50))
-Leg2 = LegCalculations.Leg(legID=2, offset=(77,-131,0), angle=35,   lowerleg_length=93.2, middleleg_length=67.2, upperleg_length=40, restPosition=(200,-131,50))
-Leg3 = LegCalculations.Leg(legID=3, offset=(77,131,0), angle=-35,  lowerleg_length=93.2, middleleg_length=67.2, upperleg_length=40, restPosition=(200,131,50))
-Leg4 = LegCalculations.Leg(legID=4, offset=(100,0,0),   angle=0,    lowerleg_length=93.2, middleleg_length=67.2, upperleg_length=40, restPosition=(250,0,50))
-Leg5 = LegCalculations.Leg(legID=5, offset=(77,-131,0),  angle=35,   lowerleg_length=93.2, middleleg_length=67.2, upperleg_length=40, restPosition=(200,-131,50))
+Leg0 = LegCalculations.Leg(legID=0, offset=(77,131,0),  angle=-35,  lowerleg_length=93.2, middleleg_length=67.2, upperleg_length=40, restPosition=(170,131,40))
+Leg1 = LegCalculations.Leg(legID=1, offset=(100,0,0),   angle=0,    lowerleg_length=93.2, middleleg_length=67.2, upperleg_length=40, restPosition=(200,0,40))
+Leg2 = LegCalculations.Leg(legID=2, offset=(77,-131,0), angle=35,   lowerleg_length=93.2, middleleg_length=67.2, upperleg_length=40, restPosition=(170,-131,40))
+Leg3 = LegCalculations.Leg(legID=3, offset=(77,131,0), angle=-35,  lowerleg_length=93.2, middleleg_length=67.2, upperleg_length=40, restPosition=(170,131,40))
+Leg4 = LegCalculations.Leg(legID=4, offset=(100,0,0),   angle=0,    lowerleg_length=93.2, middleleg_length=67.2, upperleg_length=40, restPosition=(200,0,40))
+Leg5 = LegCalculations.Leg(legID=5, offset=(77,-131,0),  angle=35,   lowerleg_length=93.2, middleleg_length=67.2, upperleg_length=40, restPosition=(170,-131,40))
 
 def stand(seconds):
     """
@@ -33,9 +33,9 @@ def gaitPatternManager(patternID :int, turnAngle, stepLength):
     :param turnAngle: The turn angle of the body in degrees
     :param stepLength: The length of each step in mm
     """
-    stepHeight = 100
-    stepTime = 5
-    pointsPerPhase = 20
+    stepHeight = 60
+    stepTime = 0.2
+    pointsPerPhase = 10
 
     match patternID:
         case 0:
@@ -104,17 +104,16 @@ def gaitPatternManager(patternID :int, turnAngle, stepLength):
         ServoController.updateLegServos(5, a1, a2, a3)
 
         time.sleep(delay)
+        ServoController.detachServos()
 
 # makes the robot stand still for 3 seconds before starting
 stand(3)
 
 while True:
 
-    #turnAngle, stepLength = ControllerCalculator.calcBodyMovement()
-    turnAngle, stepLength = 0, 100
+    turnAngle, stepLength = ControllerCalculator.calcBodyMovement()
     # makes the robot stand still for 0.2 seconds if the step length is less than 20 mm, this way the cpu wont spin hard when standing still
     if stepLength < 20:
         stand(0.2)
-
-    gaitPatternManager(2, turnAngle, stepLength)
-    #ControllerCalculator.gaitPatternID
+    else:
+        gaitPatternManager(ControllerCalculator.gaitPatternID, turnAngle, stepLength)

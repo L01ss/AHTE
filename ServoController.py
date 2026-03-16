@@ -10,9 +10,9 @@ ServoOffset = [
     (60, 40, 180),  # leg 0
     (45, 25, 180),  # leg 1
     (60, 40, 180),  # leg 2
-    (60, 40, 0),  # leg 3
+    (60, 60, 0),  # leg 3
     (60, 90, 0),  # leg 4
-    (60, 60, 0),  # leg 5
+    (60, 40, 0),  # leg 5
     ]
 
 # This sets the Direction for each servo
@@ -52,6 +52,15 @@ def clamp(a):
     :return: The clamped value
     """
     return max(0, min(180, int(a)))
+
+def detachServos():
+    """
+    detachServos detaches all the servos, this is used to prevent overheating and to allow manual movement of the legs
+    :return: None
+    """
+    for i in range(16):
+        set_angle_with_retry(servoController_L.servo[i], None)
+        set_angle_with_retry(servoController_R.servo[i], None)
 
 def updateLegServos(legID :int, angle1 :int, angle2 :int, angle3 :int):
     """
