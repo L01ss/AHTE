@@ -7,12 +7,12 @@ servoController_R = ServoKit(channels=16, address=0x41)
 
 # This sets the offset for each servo
 ServoOffset = [
-    (60, 40, 180),  # leg 0
-    (45, 25, 180),  # leg 1
-    (60, 40, 180),  # leg 2
-    (60, 60, 0),  # leg 3
-    (60, 90, 0),  # leg 4
-    (60, 40, 0),  # leg 5
+    (-20, 70, 180),  # leg 0
+    (20, 70, 180),  # leg 1
+    (20, 40, 180),  # leg 2
+    (20, 60, 0),  # leg 3
+    (20, 90, 0),  # leg 4
+    (20, 40, 0),  # leg 5
     ]
 
 # This sets the Direction for each servo
